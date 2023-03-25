@@ -1,7 +1,7 @@
 export default function Execute(){
     return(
         <div>
-            Execute
+            execute
         </div>
     )
 }
