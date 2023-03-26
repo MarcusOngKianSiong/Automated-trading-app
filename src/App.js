@@ -9,8 +9,6 @@ import { useState,useEffect } from 'react';
 
 function App() {
 
-    const [links,setLinks] = useState([]); 
-
     const createLinkSet = (pages) => {
         // intake array
         // possible values = execute, tradehistory, setparameter, periodhistory
@@ -38,6 +36,36 @@ function App() {
         })
         return links
     }
+
+    const displayPageUponRefresh = () => {
+        console.log("DIsplaying page upon refreshing...")
+        const currentPage = localStorage.getItem('currentPage')
+        let displayLinks = []
+        if(currentPage !== null){
+            
+            if(currentPage === 'setparameter'){ 
+                displayLinks = createLinkSet(['execute','periodhistory'])
+            }
+            if(currentPage === 'execute'){
+                displayLinks = createLinkSet(['setparameter','periodhistory'])
+            }
+            if(currentPage === 'periodhistory'){
+                displayLinks = createLinkSet(['setparameter','specificperiod'])
+            }
+            if(currentPage === 'specificperiod'){
+                displayLinks = createLinkSet(['periodhistory'])
+            }
+            localStorage.setItem('currentPage',currentPage);
+            return displayLinks;
+        }else{
+            displayLinks = createLinkSet(['execute','periodhistory']);
+            return displayLinks;
+        }
+    }
+
+    const [links,setLinks] = useState(displayPageUponRefresh()); 
+
+    
     
     const changeLinks = (currentPage) => {
 
@@ -57,21 +85,9 @@ function App() {
               displayLinks = createLinkSet(['periodhistory'])
           }
           setLinks(displayLinks);
-          localStorage.setItem('currentPage',currentPage)
-    }
+          localStorage.setItem('currentPage',currentPage);
 
-    const displayPageUponRefresh = () => {
-        const currentPage = localStorage.getItem('currentPage')
-        if(currentPage !== null){
-            changeLinks(currentPage)
-        }else{
-            changeLinks('setparameter')
-        }
     }
-
-    useEffect(()=>{
-        displayPageUponRefresh()
-    },[])
 
     return (
       
@@ -79,9 +95,6 @@ function App() {
           
           <nav>
               {links}
-              {/* <Link to='/'>Trade Parameter</Link>
-              <Link to='/specificperiod'>Specific Period</Link>  */}
-              
           </nav>
           
           <Routes>
@@ -92,6 +105,8 @@ function App() {
               <Route path='/specificperiod' element={<SpecificPeriod/>}/>
           </Routes>
 
+        
+        
       </div>
 
     );
