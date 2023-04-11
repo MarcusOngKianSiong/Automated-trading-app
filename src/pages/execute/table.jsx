@@ -27,7 +27,7 @@ export default function Table(prop){
                 <td className='border border-danger'>{data.exitPrice}</td>
                 <td className='border border-danger'>{data.PnL}</td>
             </tr>
-            rows.push(row)
+            rows.push(row);
         })
         // console.log(rows)
         return rows
@@ -45,7 +45,7 @@ export default function Table(prop){
                     <td className='border border-danger'>Exit Price</td>
                     <td className='border border-danger'>PnL</td>
                 </tr>
-             
+
                 {convertDataToRows()}
             </tbody>
             

@@ -18,12 +18,13 @@ export default function Table(prop){
         const lala = { entryDate, exitDate, entryTime, exitTime }
         const query = encodeQueryData(lala)
         const searchParams = createSearchParams({ entryDate, exitDate, entryTime, exitTime });
+        prop.linkChangeForPeriodHistoryTable()
         navigate({
                 pathname: '/specificperiod',
                 search: query,
               });
-      }
-
+        }
+        
     const createTable = () => {
             // create the header row
             const listOfRows = []

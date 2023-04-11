@@ -10,6 +10,7 @@ import { useState,useEffect } from 'react';
 function App() {
 
     const createLinkSet = (pages) => {
+        console.log("PAGESSS: ",pages)
         // intake array
         // possible values = execute, tradehistory, setparameter, periodhistory
         const links = []; 
@@ -32,14 +33,20 @@ function App() {
             if(page === 'specificperiod'){
                 displayName = 'Specific Period'
             }
-            links.push(<Link to={to} onClick={()=>{changeLinks(changelinks)}}>{displayName}</Link>)
+            links.push(<Link to={to} onClick={()=>{
+                console.log('CHANGINGGGG.....')
+                changeLinks(changelinks)
+            }}>{displayName}</Link>) 
         })
         return links
     }
 
     const displayPageUponRefresh = () => {
         console.log("DIsplaying page upon refreshing...")
+        
         const currentPage = localStorage.getItem('currentPage')
+        console.log("CHECKING CURRENT PAGE: ",currentPage)
+
         let displayLinks = []
         if(currentPage !== null){
             
@@ -50,11 +57,12 @@ function App() {
                 displayLinks = createLinkSet(['setparameter','periodhistory'])
             }
             if(currentPage === 'periodhistory'){
-                displayLinks = createLinkSet(['setparameter','specificperiod'])
+                displayLinks = createLinkSet(['setparameter'])
             }
             if(currentPage === 'specificperiod'){
-                displayLinks = createLinkSet(['periodhistory'])
+                displayLinks = createLinkSet(['periodhistory','setparameter'])
             }
+            console.log("DISPLAYINGGGG: ",displayLinks)
             localStorage.setItem('currentPage',currentPage);
             return displayLinks;
         }else{
@@ -64,14 +72,20 @@ function App() {
     }
 
     const [links,setLinks] = useState(displayPageUponRefresh()); 
+    
+    // Specific use case
+    const linkChangeForPeriodHistoryTable = () => {
+        localStorage.setItem('currentPage','specificperiod')
+        const displayLinks = displayPageUponRefresh()
+        setLinks(displayLinks)
+    }
 
-    
-    
+    // This changes the link
     const changeLinks = (currentPage) => {
-
+            console.log("CHANGING LINKS....")
           // If app just started,
           console.log("Running change links....: ",currentPage)
-          let displayLinks = []
+          let displayLinks = [] 
           if(currentPage === 'setparameter'){ 
               displayLinks = createLinkSet(['execute','periodhistory'])
           }
@@ -79,14 +93,13 @@ function App() {
               displayLinks = createLinkSet(['setparameter','periodhistory'])
           }
           if(currentPage === 'periodhistory'){
-              displayLinks = createLinkSet(['setparameter','specificperiod'])
+              displayLinks = createLinkSet(['setparameter'])
           }
           if(currentPage === 'specificperiod'){
-              displayLinks = createLinkSet(['periodhistory'])
+              displayLinks = createLinkSet(['periodhistory','setparameter'])
           }
           setLinks(displayLinks);
           localStorage.setItem('currentPage',currentPage);
-
     }
 
     return (
@@ -101,8 +114,8 @@ function App() {
               <Route exact path='/' element={<SetParameters/>}/>
               <Route exact path='/setparameter' element={<SetParameters/>}/>
               <Route path='/execute' element={<Execute/>}/>
-              <Route path='/periodhistory' element={<PeriodHistory/>}/>
-              <Route path='/specificperiod' element={<SpecificPeriod/>}/>
+              <Route path='/periodhistory' element={<PeriodHistory linkChangeForPeriodHistoryTable={linkChangeForPeriodHistoryTable}/>}/>
+              <Route path='/specificperiod' element={<SpecificPeriod />}/>
           </Routes>
 
         

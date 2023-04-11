@@ -35,9 +35,8 @@ export default function SpecificPeriod(){
           });
         }
         return data;
-      }
+    }
     
-
     const createTable = (freshData) => {
         // create the header row
         const listOfRows = []
@@ -74,7 +73,7 @@ export default function SpecificPeriod(){
                 
             */
     },[])
-
+    
     return(
         <div className="border border-danger">
             <table className="w-100">

@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 import React, { useState, useEffect,useRef } from "react";
 import Button from 'react-bootstrap/Button';
 import DonutChart from './donutChart';
@@ -11,7 +11,6 @@ export default function Execute(){
     const [tradeData,setTradeData] = useState([]); 
     const [counter,setCounter] = useState(0)
     
-
     const createNewRow = (newData,backEndCounter) => {
             // console.log(newData)
             setCounter(backEndCounter)
@@ -37,7 +36,7 @@ export default function Execute(){
     },[tradeData])
     
     return(
-        <div>
+        <div className='d-flex flex-column m-5'>
             <DonutChart title={"Completion Rate"} max={10} current={counter}/>
             <Table tradeData={tradeData}/>
             {/* <DonutChart/> */}

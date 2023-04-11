@@ -9,7 +9,7 @@ import Table from './table';
 
 function generateData(numEntries) {
     const data = [];
-  
+    
     for (let i = 0; i < numEntries; i++) {
       const startDate = new Date(2022, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
       const endDate = new Date(startDate.getTime() + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000);
@@ -37,7 +37,7 @@ function generateData(numEntries) {
     return data;
   }
 
-export default function PeriodHistory(){
+export default function PeriodHistory(prop){
     /*
         1. Get data from the database
         2. Split data into two types
@@ -67,8 +67,8 @@ export default function PeriodHistory(){
         <div className="d-flex flex-column border border-danger" style={{width: '100vw', height: '100vh'}}>
             
             <LineChart data={trend}/> 
-            <Button onClick={()=>{navigate('/tradeparameter')}}>Return to trade parameters</Button>
-            <Table data={tradePeriodPerformances}/>
+            {/* <Button onClick={()=>{navigate('/tradeparameter')}}>Return to trade parameters</Button> */}
+            <Table data={tradePeriodPerformances} linkChangeForPeriodHistoryTable={prop.linkChangeForPeriodHistoryTable}/>
             
         </div>
     )

@@ -2,6 +2,7 @@ import * as d3 from 'd3'
 import React, { useState, useEffect,useRef } from "react";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 // FIND A DATA DID FLOWED IN. FIND A WAY TO UPDATE THE CHART. 
 
@@ -96,6 +97,8 @@ export default function DonutChart(prop){
         console.log("Donut: ",prop.current)
         const [chartData,setChartData] = useState([0,10]);
         const [handleChange, setHandleChange] = useState(null);
+        const [nextPageButtons, setNextPageButtons] = useState(null);
+        const navigate = useNavigate();
         const chartContainer = useRef(null);
 
         const createChart = () => {
@@ -168,6 +171,9 @@ export default function DonutChart(prop){
             if(prop.current!==0){
                     setChartData([prop.current,10-prop.current])
             }
+            if(prop.current === 10){
+                setNextPageButtons([<Button onClick={()=>{navigate('/setparameter')}}>Back to trade parameters</Button>,<Button onClick={()=>{navigate('/periodhistory')}}>View trade period history</Button>])
+            }
         },[prop.current])
 
         useEffect(()=>{
@@ -175,34 +181,12 @@ export default function DonutChart(prop){
             
             console.log("THIS THIS THIS: ",chartData)
         },[chartData])
-        // useEffect(()=>{
-        //     if(handleChange!==null){
-        //         updateProgress()
-        //     }
-        // },[handleChange]) 
-
-        // useEffect(()=>{
-            
-        //     updateProgress()
-        // },[chartData])
-        
-        // useEffect(()=>{
-            
-        //     const previous = chartData[0];
-        //     console.log("CHECKING THE NUMBERS: ",prop.current, 10-prop.current)
-        //     setChartData([prop.current,10-prop.current])
-            
-        // },[prop.current])
-
-        // useEffect(()=>{
-        //     console.log(chartData)
-        //     // preventMultipleChartsFromAppearing()
-        // },[chartData])
 
         return(
             <div className='m-4'>
                 <h5>{prop.title}</h5>
                 <div ref={chartContainer}></div> 
+                {nextPageButtons}
             </div>
         )
 }
